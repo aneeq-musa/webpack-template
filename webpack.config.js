@@ -17,10 +17,17 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
-      title: 'Development'
+      hash: true,
+      filename: 'index.html',
+      template: './src/html/index.html'
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      filename: 'about.html',
+      template: './src/html/about.html'
     }),
     new MiniCssExtractPlugin({
-      filename: 'styles.min.css'
+      filename: './css/styles.min.css'
   })
   ],
   output: {
