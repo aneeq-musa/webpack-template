@@ -1,6 +1,9 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const devMode = process.env.NODE_ENV !== 'production'
+//const extractCSS = new ExtractTextPlugin('styles.min.css');
 
 module.exports = {
   mode: "development",
@@ -15,7 +18,10 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new HtmlWebpackPlugin({
       title: 'Development'
-    })
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'styles.min.css'
+  })
   ],
   output: {
     filename: 'bundle.js',
@@ -25,18 +31,13 @@ module.exports = {
      rules: [
        {
          test: /\.scss$/,
-         use: [{
-           loader: "style-loader"
-         },
-         {
-           loader: "css-loader",
-           options: { sourceMap: true }
-         },
-         {
-           loader: "sass-loader",
-           options: { sourceMap: true }
-         }]
-       }
-     ]
-   }
+         use: [
+          MiniCssExtractPlugin.loader,
+          { loader: 'css-loader', options: { url: false, sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } }
+        ],
+        }
+      ]
+    },
+    mode : devMode ? 'development' : 'production'
 };
