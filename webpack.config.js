@@ -6,10 +6,25 @@ const devMode = process.env.NODE_ENV !== 'production'
 //const extractCSS = new ExtractTextPlugin('styles.min.css');
 
 module.exports = {
-  mode: "development",
   entry: {
     app: './src/index.js'
   },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+         MiniCssExtractPlugin.loader,
+         { loader: 'css-loader', options: { url: false, sourceMap: true } },
+         { loader: 'sass-loader', options: { sourceMap: true } }
+       ],
+       }
+     ]
+   },
   devtool: 'inline-source-map',
    devServer: {
      contentBase: './dist'
@@ -30,21 +45,5 @@ module.exports = {
       filename: './css/styles.min.css'
   })
   ],
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  },
-   module: {
-     rules: [
-       {
-         test: /\.scss$/,
-         use: [
-          MiniCssExtractPlugin.loader,
-          { loader: 'css-loader', options: { url: false, sourceMap: true } },
-          { loader: 'sass-loader', options: { sourceMap: true } }
-        ],
-        }
-      ]
-    },
-    mode : devMode ? 'development' : 'production'
+  mode : devMode ? 'development' : 'production'
 };
